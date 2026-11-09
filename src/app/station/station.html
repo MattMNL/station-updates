@@ -1,0 +1,11 @@
+<a routerLink="/">Back to stations overview</a>
+<p>
+  @if (station.isLoading()) {
+    Loading station...
+  } @else if (station.error()) {
+    Something went wrong loading station.
+    <button (click)="station.reload()">Retry</button>
+  } @else if (station.hasValue()) {
+    <station-notice-form [station]="station.value()"></station-notice-form>
+  }
+</p>

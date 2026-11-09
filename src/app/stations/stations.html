@@ -1,0 +1,22 @@
+@if (stations.isLoading()) {
+  Loading stations...
+} @else if (stations.error()) {
+  Something went wrong loading stations.
+  <button (click)="stations.reload()">Retry</button>
+} @else if (stations.hasValue()) {
+  <p>Search stations</p>
+  <input
+    type="search"
+    placeholder="Search for a station, for example: Amsterdam Centraal"
+    [formField]="filterStationsForm.query"
+  />
+  <ul>
+    @for (station of filteredStations(); track station.naam) {
+      <li>
+        <a routerLink="station/{{ station.code }}">{{ station.naam }}</a>
+      </li>
+    } @empty {
+      <li>No stations match "{{ filterStationsForm.query().value() }}".</li>
+    }
+  </ul>
+}

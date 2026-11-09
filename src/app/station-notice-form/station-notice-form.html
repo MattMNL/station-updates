@@ -1,0 +1,75 @@
+<p>Create a new service message for station {{ station().naam }}</p>
+<form (submit)="onSubmit($event)" novalidate>
+  <p>
+    <label>
+      Title
+      <input type="text" [formField]="noticeForm.title" />
+    </label>
+    @if (noticeForm.title().touched()) {
+      @for (error of noticeForm.title().errors(); track error.kind) {
+        <p class="error">{{ error.message }}</p>
+      }
+    }
+  </p>
+
+  <p>
+    <label>
+      Date
+      <input type="date" [formField]="noticeForm.date" />
+    </label>
+    @if (noticeForm.date().touched()) {
+      @for (error of noticeForm.date().errors(); track error.kind) {
+        <p class="error">{{ error.message }}</p>
+      }
+    }
+  </p>
+
+  <p>
+    <label>
+      Type
+      <select [formField]="noticeForm.type">
+        <option value="" disabled>Select a type…</option>
+        <option value="disruption">Disruption</option>
+        <option value="information">Information</option>
+        <option value="service">Service</option>
+      </select>
+    </label>
+    @if (noticeForm.type().touched()) {
+      @for (error of noticeForm.type().errors(); track error.kind) {
+        <p class="error">{{ error.message }}</p>
+      }
+    }
+  </p>
+
+  <p>
+    <label>
+      Description
+      <textarea rows="5" [formField]="noticeForm.description"></textarea>
+    </label>
+    @if (noticeForm.description().touched()) {
+      @for (error of noticeForm.description().errors(); track error.kind) {
+        <p class="error">{{ error.message }}</p>
+      }
+    }
+  </p>
+
+  <p>
+    <button type="submit" [disabled]="noticeForm().invalid()">Save</button>
+  </p>
+</form>
+
+<dialog
+  #stationNoticeDialog
+  aria-labelledby="notice-dialog-title"
+  (click)="onDialogClick($event)"
+  (close)="submitted.set(null)"
+>
+  @if (submitted(); as notice) {
+    <button type="button" (click)="stationNoticeDialog.close()">x</button>
+    <h3 id="notice-dialog-title">{{ notice.title }}</h3>
+    <p>{{ station().naam }}</p>
+    <p>{{ notice.date | date: 'longDate' }}</p>
+    <p>{{ notice.type | titlecase }}</p>
+    <p>{{ notice.description }}</p>
+  }
+</dialog>
